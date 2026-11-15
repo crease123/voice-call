@@ -6,7 +6,11 @@ Start the microphone, speak, and pause: the plugin transcribes and sends your me
 
 [中文指南](README.zh.md) · [npm](https://www.npmjs.com/package/voice-call) · [GitHub](https://github.com/crease123/voice-call) · [Releases](https://github.com/crease123/voice-call/releases)
 
-[Watch the usage tutorial on Bilibili (Chinese)](https://www.bilibili.com/video/BV1t9sJ6NErV/)
+## Video tutorial · 使用教学视频
+
+**[▶ Watch the author’s Voice call tutorial on Bilibili / 观看作者的语音通话使用教学](https://www.bilibili.com/video/BV1t9sJ6NErV/)**
+
+New to the plugin? Start with this Chinese video tutorial, then follow the setup instructions below. The screenshot shows where to find the phone button to enter call mode.
 
 ![Voice call in a Standard conversation; the red arrow marks the phone button beside the composer](docs/images/voice-call-overview.png)
 

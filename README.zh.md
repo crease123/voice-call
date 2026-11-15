@@ -6,7 +6,11 @@
 
 [English](README.md) · [npm 包](https://www.npmjs.com/package/voice-call) · [GitHub](https://github.com/crease123/voice-call) · [发行版本](https://github.com/crease123/voice-call/releases)
 
-[观看插件使用教学视频（Bilibili）](https://www.bilibili.com/video/BV1t9sJ6NErV/)
+## 使用教学视频（推荐先看）
+
+**[▶ 点击观看：作者录制的「语音通话」插件使用教学](https://www.bilibili.com/video/BV1t9sJ6NErV/)**
+
+第一次使用，建议先观看这段教学视频，再按照下方说明完成配置。下面的图片标出了进入通话模式的电话按钮，方便对照操作。
 
 ![标准模式下的语音通话入口，红色箭头指向输入框右下角的电话按钮](docs/images/voice-call-overview.png)
 
