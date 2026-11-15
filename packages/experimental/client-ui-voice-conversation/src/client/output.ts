@@ -39,7 +39,7 @@ export class VoiceOutput {
       if (event.type === 'user/message') {
         const source = event.data.source
         // Context snapshots supplement the same request; they are not a new speaker.
-        if (String(source.kind) === 'runtime-context') continue
+        if (['runtime-context', 'skill-catalog', 'time-context', 'agent-instructions'].includes(String(source.kind))) continue
         // The optional Schedule package extends MessageSourceMap outside this Client package.
         if (String(source.kind) === 'schedule') {
           const text = event.data.content.filter(block => block.type === 'text').map(block => block.text).join('')

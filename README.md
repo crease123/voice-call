@@ -52,7 +52,7 @@ Replace `<your-profile>` with your actual profile name. Desktop users should ins
 
 </details>
 
-> This guide describes v0.3.5 and later, where voice calls work within your existing conversation without a separate Agent preset. Upgrade older installations to use the behavior shown here.
+> This guide describes v0.3.6 and later, where voice calls work within your existing conversation without a separate Agent preset. Upgrade older installations to use the behavior shown here.
 
 ### 2. Configure your speech services
 
@@ -145,3 +145,5 @@ Version 0.3.4 preserves speech playback ownership when runtime context is inject
 Continued speech while recognition is pending is retained and merged in order before submission; speaking during an Agent reply still interrupts playback.
 
 The call entry uses a phone handset, with the same handset rotated for hangup. Older screenshots above still show the previous microphone entry.
+
+First-reply speech ownership also survives skill catalog, time context and workspace instruction messages from the installed desktop app.

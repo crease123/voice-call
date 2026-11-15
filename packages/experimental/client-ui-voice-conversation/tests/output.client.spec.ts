@@ -109,3 +109,20 @@ it('does not acquire response ownership from runtime context alone', () => {
     delta('不应朗读。'), settlement('不应朗读。')])
   expect(speak).not.toHaveBeenCalled()
 })
+
+it('keeps the first reply after the installed app emits skill and time context', () => {
+  const speak = vi.fn(), output = new VoiceOutput(100, speak, vi.fn())
+  start(output)
+  for (const kind of ['runtime-context', 'skill-catalog', 'time-context', 'agent-instructions']) {
+    output.accept([row('user/message', { source: { kind }, content: [{ type: 'text', text: 'Supplemental context' }] })])
+  }
+  output.accept([delta('第一句正常朗读。'), settlement('第一句正常朗读。')])
+  expect(speak.mock.calls).toEqual([['第一句正常朗读。']])
+})
+
+it.each(['skill-catalog', 'time-context', 'agent-instructions'])('does not acquire speech ownership from %s alone', kind => {
+  const speak = vi.fn(), output = new VoiceOutput(100, speak, vi.fn())
+  output.accept([row('turn/start', { turn: 1 }), row('user/message', { source: { kind }, content: [] }),
+    delta('不能自动朗读。'), settlement('不能自动朗读。')])
+  expect(speak).not.toHaveBeenCalled()
+})
