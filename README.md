@@ -37,7 +37,7 @@ In DSH, open **Plugins → Add plugin** and add this npm package:
 voice-call
 ```
 
-Check that the source repository is **`crease123/voice-call`** to distinguish it from similarly named projects. Once installed and enabled, the composer should show a microphone, and Settings should include “Voice call” and “Voice call instructions.”
+Check that the source repository is **`crease123/voice-call`** to distinguish it from similarly named projects. Once installed and enabled, the composer should show a phone icon, and Settings should include “Voice call” and “Voice call instructions.”
 
 Alternatively, get the prebuilt package from [GitHub Releases](https://github.com/crease123/voice-call/releases) and add its download URL in DSH. There is no need to download or build the source.
 
@@ -52,7 +52,7 @@ Replace `<your-profile>` with your actual profile name. Desktop users should ins
 
 </details>
 
-> This guide describes v0.3.4 and later, where voice calls work within your existing conversation without a separate Agent preset. Upgrade older installations to use the behavior shown here.
+> This guide describes v0.3.5 and later, where voice calls work within your existing conversation without a separate Agent preset. Upgrade older installations to use the behavior shown here.
 
 ### 2. Configure your speech services
 
@@ -69,9 +69,9 @@ Saved secrets are not displayed again; blank fields preserve existing values. Cr
 
 Apply your selections before previewing speech. After switching providers, hang up and start a new call. DeepSeek offers Stella and Tide voices; rate, pitch, and delivery controls apply to Doubao only.
 
-### 3. Tap the microphone and talk
+### 3. Tap the phone and talk
 
-Open an ordinary conversation and click the microphone at the lower right of the composer. On first use, allow microphone access for DSH or your browser. Start speaking when the status says “Listening.”
+Open an ordinary conversation and click the phone icon at the lower right of the composer. On first use, allow microphone access for DSH or your browser. Start speaking when the status says “Listening.”
 
 ![Microphone close-up; the red arrow marks the control that starts a voice call](docs/images/voice-call-start.png)
 
@@ -143,3 +143,5 @@ MIT License. Never commit API keys or tokens, or include them in issues or scree
 Version 0.3.4 preserves speech playback ownership when runtime context is injected, fixing silent first replies after starting a call.
 
 Continued speech while recognition is pending is retained and merged in order before submission; speaking during an Agent reply still interrupts playback.
+
+The call entry uses a phone handset, with the same handset rotated for hangup. Older screenshots above still show the previous microphone entry.
