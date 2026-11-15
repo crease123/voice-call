@@ -19,7 +19,7 @@ function fixture() {
     return true
   })
   const form: ConfigForm<PersonalAgentPreferences> = { ...snapshot, mutate, set: vi.fn(async () => true), unset: vi.fn(async () => true) }
-  const catalog: PersonalAgentCatalog = { ...initial, settingsNamespace: 'personal-agent' as SettingsNamespace }
+  const catalog: PersonalAgentCatalog = { ...initial, defaultCallPrompt: 'Built-in call instructions.', settingsNamespace: 'personal-agent' as SettingsNamespace }
   const read = vi.fn(async (_signal: AbortSignal) => ({ ok: true as const, value: catalog }))
   const ensure = vi.fn(async () => {})
   const controller = new PersonalSettingsController({ catalog: read, ensure, form: () => form })
@@ -143,4 +143,40 @@ it('reports an initial load failure without exposing an editable empty form', as
   await vi.waitFor(() => { expect(b.controller.state.getSnapshot().failure).toBe('loadError') })
   expect(b.controller.state.getSnapshot().draft).toBeUndefined()
   await b.controller.dispose()
+})
+
+it('restores built-in call rules as a draft, supports Cancel and saves them without replacing base rules', async () => {
+  const b = fixture(); await opened(b)
+  b.controller.edit('basePrompt', 'Keep my base draft.')
+  b.controller.edit('callPrompt', 'My custom call rules.')
+  b.controller.defaults()
+  expect(b.controller.state.getSnapshot()).toMatchObject({ dirty: true,
+    saved: initial, draft: { basePrompt: 'Keep my base draft.', callPrompt: b.catalog.defaultCallPrompt } })
+  expect(b.mutate).not.toHaveBeenCalled()
+  b.controller.cancel()
+  expect(b.controller.state.getSnapshot().draft).toEqual(initial)
+  b.controller.defaults(); await b.controller.apply()
+  b.controller.close(); await opened(b)
+  expect(b.controller.state.getSnapshot()).toMatchObject({ dirty: false,
+    saved: { basePrompt: initial.basePrompt, callPrompt: b.catalog.defaultCallPrompt } })
+  await b.controller.dispose()
+})
+
+it('ignores Restore defaults while read-only or saving, and on Hosts without default metadata', async () => {
+  const b = fixture(); await opened(b)
+  b.controller.edit('callPrompt', 'Pending rules.')
+  const committed = Promise.withResolvers<boolean>()
+  b.mutate.mockReturnValueOnce(committed.promise)
+  const saving = b.controller.apply()
+  b.controller.defaults()
+  expect(b.controller.state.getSnapshot().draft?.callPrompt).toBe('Pending rules.')
+  committed.resolve(false); await saving
+  b.snapshot.set({ ...b.snapshot.getSnapshot(), writable: false })
+  b.controller.defaults()
+  expect(b.controller.state.getSnapshot().draft?.callPrompt).toBe('Pending rules.')
+  await b.controller.dispose()
+  const old = fixture(); delete old.catalog.defaultCallPrompt; await opened(old)
+  old.controller.defaults()
+  expect(old.controller.state.getSnapshot()).toMatchObject({ dirty: false, draft: initial })
+  await old.controller.dispose()
 })

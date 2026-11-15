@@ -32,6 +32,9 @@ export interface Config {
 /** Plain Loader configuration before volatile fields become live references. */
 export interface Options { basePreset?: string; basePrompt?: string; callPrompt?: string }
 
+/** Built-in call guidance, independent of saved user overrides. */
+const DEFAULT_CALL_PROMPT = '用户正在通过实时语音与你交谈。先直接回答核心问题，默认每次说 1–3 句，尽量控制在 100 字以内。使用自然口语，避免标题、表格和长列表。复杂问题先讲关键结论，用户要求展开时再详细解释。执行任务时简短说明进展，完成后报告结果。代码、长路径和详细资料留在文字中，不逐字朗读。'
+
 type Lease = { release(): void }
 
 /** No state transition starts a model turn; the next ordinary request records the current channel. */
@@ -40,7 +43,7 @@ export default class PersonalAgent extends TypertRemoteService {
   static Config: z<Options, Config> = z.object({
     basePreset: z.string().min(1).default('standard'),
     basePrompt: z.string().min(1).default('你是用户的语音通话助手，协助处理日常事务、学习讨论、资料整理和具体任务。先理解用户的目标，直接回答核心问题，使用自然、清晰的中文。简单问题简短回答；复杂问题先给结论，再按需要展开。执行任务时沿用当前会话的工具和权限，简短说明必要进展，并在完成后报告实际结果；未完成或不确定的事情如实说明。尊重用户明确表达的偏好，不反复确认已经授权的常规步骤。').volatile(),
-    callPrompt: z.string().min(1).default('用户正在通过实时语音与你交谈。先直接回答核心问题，默认每次说 1–3 句，尽量控制在 100 字以内。使用自然口语，避免标题、表格和长列表。复杂问题先讲关键结论，用户要求展开时再详细解释。执行任务时简短说明进展，完成后报告结果。代码、长路径和详细资料留在文字中，不逐字朗读。').volatile(),
+    callPrompt: z.string().min(1).default(DEFAULT_CALL_PROMPT).volatile(),
   })
 
   private readonly lifetime = new AbortController()
@@ -75,7 +78,7 @@ export default class PersonalAgent extends TypertRemoteService {
   @Remote
   catalog(signal: AbortSignal): PersonalAgentCatalog {
     signal.throwIfAborted(); this.lifetime.signal.throwIfAborted()
-    return { basePrompt: this.config.basePrompt.get(), callPrompt: this.config.callPrompt.get(),
+    return { basePrompt: this.config.basePrompt.get(), callPrompt: this.config.callPrompt.get(), defaultCallPrompt: DEFAULT_CALL_PROMPT,
       ...(this.settingsNamespace === undefined ? {} : { settingsNamespace: this.settingsNamespace }) }
   }
 

@@ -12,6 +12,8 @@ export interface PersonalAgentPreferences {
 
 /** Saved preferences and their writable Host configuration entry, when available. */
 export interface PersonalAgentCatalog extends PersonalAgentPreferences {
+  /** Built-in call guidance; absent on older Hosts. */
+  defaultCallPrompt?: string
   /** Omitted when the service was mounted without a Loader entry. */
   settingsNamespace?: SettingsNamespace
 }

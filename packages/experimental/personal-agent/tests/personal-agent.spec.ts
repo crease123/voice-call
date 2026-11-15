@@ -233,3 +233,12 @@ it('clears calls immediately on service unload, including streams paused after a
   await expect(stream.next()).resolves.toEqual({ done: true, value: undefined })
   expect(() => b.api.catalog(new AbortController().signal)).toThrow()
 })
+
+it('reports built-in call instructions independently of saved overrides', async () => {
+  const b = await fixture(), signal = new AbortController().signal
+  const defaults = b.api.catalog(signal).defaultCallPrompt
+  expect(defaults).toBe(PersonalAgent.Config({}).callPrompt)
+  expect(defaults).not.toBe(b.api.catalog(signal).callPrompt)
+  await b.update('Keep the legacy base.', 'A different saved call prompt.')
+  expect(b.api.catalog(signal)).toMatchObject({ callPrompt: 'A different saved call prompt.', defaultCallPrompt: defaults })
+})

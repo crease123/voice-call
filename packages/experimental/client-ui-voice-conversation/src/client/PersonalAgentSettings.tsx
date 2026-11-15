@@ -12,6 +12,7 @@ export interface PersonalAgentSettingsInjected {
   open: () => void
   close: () => void
   edit: PersonalSettingsController['edit']
+  defaults: () => void
   cancel: () => void
   apply: () => Promise<void>
 }
@@ -23,7 +24,7 @@ export type PersonalAgentSettingsProps = PropsLocale<typeof PERSONAL_NS> & Injec
  * @param props - bound editor state, commands and locale.
  * @returns one personal Agent settings page.
  */
-export function PersonalAgentSettings({ open, close, edit, cancel, apply, usePersonalSettings, t }: PersonalAgentSettingsProps) {
+export function PersonalAgentSettings({ open, close, edit, defaults, cancel, apply, usePersonalSettings, t }: PersonalAgentSettingsProps) {
   const state = usePersonalSettings(value => value)
   useEffect(() => { open(); return close }, [open, close])
   const disabled = state.busy || !state.writable
@@ -36,6 +37,7 @@ export function PersonalAgentSettings({ open, close, edit, cancel, apply, usePer
         <textarea aria-label={t('callPrompt')} rows={7} disabled={disabled} value={state.draft.callPrompt}
           onChange={(event) => { edit('callPrompt', event.target.value) }} /></label>
       <div className={css.actions}><p className={css.hint}>{t(state.writable ? 'timing' : 'readonly')}</p><div className={css.buttons}>
+        <Button disabled={disabled || state.defaultCallPrompt === undefined} onClick={defaults}>{t('defaults')}</Button>
         <Button disabled={state.busy || (!state.dirty && !state.failure)} onClick={cancel}>{t('cancel')}</Button>
         <Button variant="primary" disabled={disabled || !state.dirty} onClick={() => { void apply() }}>{t(state.busy ? 'saving' : 'save')}</Button>
       </div></div>

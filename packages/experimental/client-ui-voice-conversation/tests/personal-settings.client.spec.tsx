@@ -12,9 +12,9 @@ import { personalEn } from '../src/client/personal-locales.ts'
 afterEach(cleanup)
 function fixture() {
   const saved = { basePrompt: 'Saved base instructions.', callPrompt: 'Saved call instructions.' }
-  const state = createSnapshotStore<PersonalSettingsState>({ open: true, saved, draft: { ...saved }, busy: false, writable: true, dirty: false })
+  const state = createSnapshotStore<PersonalSettingsState>({ open: true, saved, draft: { ...saved }, busy: false, writable: true, dirty: false, defaultCallPrompt: 'Built-in rules.' })
   const props: PersonalAgentSettingsProps = { usePersonalSettings: bindSnapshotSelector(state), t: makeTranslate(personalEn),
-    open: vi.fn(), close: vi.fn(), edit: vi.fn(), cancel: vi.fn(), apply: vi.fn(async () => {}) }
+    open: vi.fn(), close: vi.fn(), edit: vi.fn(), defaults: vi.fn(), cancel: vi.fn(), apply: vi.fn(async () => {}) }
   return { state, props }
 }
 
@@ -22,6 +22,7 @@ it('opens the editor, labels call guidance and joins its page lifecycle', () => 
   const b = fixture(), view = render(createElement(PersonalAgentSettings, b.props))
   expect(b.props.open).toHaveBeenCalledOnce()
   expect(screen.queryByRole('textbox', { name: 'Base instructions' })).toBeNull()
+  fireEvent.click(screen.getByRole('button', { name: 'Restore defaults' })); expect(b.props.defaults).toHaveBeenCalledOnce()
   fireEvent.change(screen.getByRole('textbox', { name: 'Call instructions' }), { target: { value: 'Draft call.' } })
   expect(b.props.edit).toHaveBeenCalledWith('callPrompt', 'Draft call.')
   expect(screen.getByRole('button', { name: 'Save' }).hasAttribute('disabled')).toBe(true)
@@ -49,5 +50,6 @@ it('keeps call guidance visible during save conflicts and read-only profiles', (
   act(() => { b.state.update((state) => { state.writable = false }) })
   expect(screen.getByRole('textbox', { name: 'Call instructions' }).hasAttribute('disabled')).toBe(true)
   expect(screen.getByRole('button', { name: 'Save' }).hasAttribute('disabled')).toBe(true)
+  expect(screen.getByRole('button', { name: 'Restore defaults' }).hasAttribute('disabled')).toBe(true)
   view.unmount()
 })

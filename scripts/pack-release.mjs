@@ -29,8 +29,16 @@ async function pack(name, source, raw, files, embedded = []) {
       const unpack = spawnSync('tar', ['-xzf', archive, '--strip-components=1', '-C', destination], { stdio: 'inherit' })
       if (unpack.status !== 0) throw new Error(`Could not embed ${packageName}`)
     }
-    for (const doc of ['README.md', 'README.zh.md', 'LICENSE']) await cp(join(root, doc), join(directory, doc))
-    if (name === manifest.name) await cp(join(root, 'docs/images'), join(directory, 'docs/images'), { recursive: true })
+    for (const doc of ['README.md', 'README.zh.md', 'LICENSE']) {
+      let content = await readFile(join(root, doc), 'utf8')
+      if (doc.startsWith('README')) content = content.replace(/(\!\[[^\]]*\]\()docs\/images\//g,
+        `$1https://raw.githubusercontent.com/crease123/voice-call/v${version}/docs/images/`)
+      await writeFile(join(directory, doc), content)
+    }
+    if (name === manifest.name) {
+      await cp(join(root, 'docs/images'), join(directory, 'docs/images'), { recursive: true })
+      await cp(join(root, 'screenshots.json'), join(directory, 'screenshots.json'))
+    }
     async function cleanBuiltPaths(folder) {
       for (const entry of await readdir(folder, { withFileTypes: true })) {
         const file = join(folder, entry.name)

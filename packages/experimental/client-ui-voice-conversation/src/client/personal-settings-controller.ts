@@ -9,6 +9,7 @@ export interface PersonalSettingsState {
   open: boolean
   saved?: PersonalAgentPreferences
   draft?: PersonalAgentPreferences
+  defaultCallPrompt?: string
   busy: boolean
   writable: boolean
   dirty: boolean
@@ -60,7 +61,7 @@ export class PersonalSettingsController {
         const snapshot = this.form?.getSnapshot()
         const saved = preferences(snapshot?.value ?? catalog)
         this.revision = snapshot?.revision
-        this.state.set({ open: true, saved, draft: { ...saved }, busy: false,
+        this.state.set({ open: true, saved, draft: { ...saved }, defaultCallPrompt: catalog.defaultCallPrompt, busy: false,
           writable: snapshot?.status === 'ready' && snapshot.writable, dirty: false })
         if (this.form) this.unsubscribe = this.form.subscribe(() => { this.acceptSaved() })
       } catch (_error) {
@@ -94,6 +95,12 @@ export class PersonalSettingsController {
       state.dirty = state.saved === undefined || !equal(state.draft, state.saved)
       if (state.failure !== 'conflict') state.failure = undefined
     })
+  }
+
+  /** Stage the built-in call instructions without changing saved rules or base instructions. */
+  defaults(): void {
+    const prompt = this.state.getSnapshot().defaultCallPrompt
+    if (prompt !== undefined) this.edit('callPrompt', prompt)
   }
 
   /** Discard local edits and reload the latest accepted rules without saving. */

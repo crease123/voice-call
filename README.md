@@ -6,9 +6,11 @@ Start the microphone, speak, and pause: the plugin transcribes and sends your me
 
 [中文指南](README.zh.md) · [npm](https://www.npmjs.com/package/voice-call) · [GitHub](https://github.com/crease123/voice-call) · [Releases](https://github.com/crease123/voice-call/releases)
 
-![Voice call in a Standard conversation; the red arrow marks the microphone beside the composer](docs/images/voice-call-overview.png)
+[Watch the usage tutorial on Bilibili (Chinese)](https://www.bilibili.com/video/BV1t9sJ6NErV/)
 
-*Actual usage screenshot, with the entire sidebar removed to exclude workspace names, conversation lists, and account details. The model shown is an example, not a requirement. Screenshots use the Chinese interface.*
+![Voice call in a Standard conversation; the red arrow marks the phone button beside the composer](docs/images/voice-call-overview.png)
+
+*Actual usage screenshot. The red arrow and outline mark the phone button. The model shown is an example; screenshots use the Chinese interface.*
 
 ![Connected voice call with five voice bars, listening status, and a hangup control](docs/images/voice-call-active.png)
 
@@ -73,11 +75,9 @@ Apply your selections before previewing speech. After switching providers, hang 
 
 Open an ordinary conversation and click the phone icon at the lower right of the composer. On first use, allow microphone access for DSH or your browser. Start speaking when the status says “Listening.”
 
-![Microphone close-up; the red arrow marks the control that starts a voice call](docs/images/voice-call-start.png)
+![Phone button; the red arrow marks the control that starts a voice call](docs/images/voice-call-start.png)
 
-*Use the microphone marked by the arrow, rather than the Send button to its right.*
-
-![Four steps: choose services, tap the microphone, talk naturally, and hang up](docs/images/voice-call-steps-en.png)
+*Click the phone button inside the red outline to start a call.*
 
 Pause after a sentence to transcribe and send it automatically. Hear the Agent’s response while retaining the conversation’s text transcript. Speak to interrupt playback when you need to change direction. Click **Hang up voice call** to return to text input; your unsent text draft is preserved.
 
@@ -147,3 +147,5 @@ Continued speech while recognition is pending is retained and merged in order be
 The call entry uses a phone handset, with the same handset rotated for hangup. Older screenshots above still show the previous microphone entry.
 
 First-reply speech ownership also survives skill catalog, time context and workspace instruction messages from the installed desktop app.
+
+In Settings → Voice call instructions, choose **Restore defaults** to stage the built-in call instructions, then **Save** to apply them. Choose **Cancel** to keep the saved instructions instead.

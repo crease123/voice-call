@@ -111,3 +111,5 @@ DeepSeek ASR uploads each completed WAV utterance; TTS uses WebSocket PCM with e
 Voice conversation is a dedicated item in the Settings sidebar. Select it to configure speech providers, voices, preview, and speech detection directly; there is no nested General settings dialog.
 
 Doubao credentials can be entered directly in Voice call settings: API key, or legacy App ID and Access token. Apply writes secrets to the Host credential store; blank inputs retain saved values, Cancel clears drafts, and saved values are never returned or stored in profile patches. Environment-supplied credentials may be read-only. Credentials are saved before ordinary preferences; if a later write fails, already accepted credentials remain saved.
+
+In Settings → Voice call instructions, **Restore defaults** stages the built-in call instructions. Choose **Save** to apply them to subsequent model requests, or **Cancel** to retain the saved instructions. Restoring call instructions preserves base instructions.

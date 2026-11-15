@@ -18,7 +18,7 @@ function registerSettings(ctx: Context): void {
   })
   const actions: PersonalAgentSettingsInjected = {
     hooks: { personalSettings: settings.state }, open: () => { settings.open() }, close: () => { settings.close() },
-    edit: (field, value) => { settings.edit(field, value) }, cancel: () => { settings.cancel() }, apply: () => settings.apply(),
+    edit: (field, value) => { settings.edit(field, value) }, defaults: () => { settings.defaults() }, cancel: () => { settings.cancel() }, apply: () => settings.apply(),
   }
   ctx.effect(() => ctx.locale.register(PERSONAL_NS, {
     en: personalEn, zh: personalZh, ja: personalJa, es: personalEs, fr: personalFr, de: personalDe, ru: personalRu, pt: personalPt,

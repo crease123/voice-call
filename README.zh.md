@@ -6,9 +6,11 @@
 
 [English](README.md) · [npm 包](https://www.npmjs.com/package/voice-call) · [GitHub](https://github.com/crease123/voice-call) · [发行版本](https://github.com/crease123/voice-call/releases)
 
-![标准模式下的语音通话入口，红色箭头指向输入框右下角的麦克风](docs/images/voice-call-overview.png)
+[观看插件使用教学视频（Bilibili）](https://www.bilibili.com/video/BV1t9sJ6NErV/)
 
-*真实使用界面。截图已裁掉整个左侧栏，移除工作区、会话列表和账号信息。图中的模型名称是示例，不是使用本插件的前提。*
+![标准模式下的语音通话入口，红色箭头指向输入框右下角的电话按钮](docs/images/voice-call-overview.png)
+
+*真实使用界面。红色箭头和方框标出电话按钮；图中的模型名称仅为示例。*
 
 ![语音通话已连接：五段声条、正在聆听状态和挂断按钮](docs/images/voice-call-active.png)
 
@@ -73,11 +75,9 @@ dsh plugin --profile <你的-profile> add voice-call
 
 打开一个普通会话，点击输入区右下角的电话图标。首次使用时，允许 DSH 或浏览器访问麦克风。看到“正在聆听”后即可讲话。
 
-![输入区麦克风按钮放大图，红色箭头标出开始通话的位置](docs/images/voice-call-start.png)
+![输入区电话按钮示意图，红色箭头标出开始通话的位置](docs/images/voice-call-start.png)
 
-*箭头标出的麦克风是开始通话的按钮，不是右侧的发送按钮。*
-
-![配置服务、点击麦克风、自然交谈、挂断通话的四步示意图](docs/images/voice-call-steps-zh.png)
+*点击红框中的电话按钮开始通话。*
 
 说完一句后稍作停顿，插件会自动识别并发送。Agent 回答时会播放语音，你也能在会话里查看文字。需要换个问题时可以开口打断；结束时点击 **挂断语音通话**，即可回到文字输入。通话前尚未发送的文字草稿会保留。
 
@@ -147,3 +147,5 @@ MIT License。请勿向仓库、Issue 或截图提交 API Key、Token 等凭据�
 通话入口使用电话听筒图标，挂断按钮使用同一听筒的挂断方向。上述旧版截图中的麦克风入口已替换为电话图标。
 
 首句朗读标记也会在桌面应用插入技能目录、时间上下文及工作区指令时保留，避免这些补充信息导致首句无声。
+
+在「设置 → 通话提示词」点击「恢复默认」可填回内置通话提示词，点击「保存」后生效；未保存时可点「取消」保留原设置。
