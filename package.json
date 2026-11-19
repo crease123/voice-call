@@ -14,6 +14,9 @@
   "scripts": {
     "format-check": "git diff --check",
     "generate:remote": "node scripts/generate-remote.mjs",
+    "regen:typert": "node scripts/generate-remote.mjs && node scripts/snapshot-typert.mjs",
+    "snapshot:typert": "node scripts/snapshot-typert.mjs",
+    "stage:typert": "node scripts/stage-typert.mjs",
     "list": "pnpm -r list --depth -1",
     "test:voice-output": "vitest run packages/experimental/client-ui-voice-conversation/tests/output.client.spec.ts",
     "build": "node scripts/build.mjs",

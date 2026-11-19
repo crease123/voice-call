@@ -1,8 +1,16 @@
-import { join } from 'node:path'
-import { pathToFileURL } from 'node:url'
+/**
+ * Host-face build. The client bundle is built separately by
+ * `tsdown.client.config.ts`, because it has its own externals contract.
+ */
+import { defineConfig } from 'tsdown'
 
-const harnessRoot = process.env.DSH_HARNESS_ROOT
-if (!harnessRoot) throw new Error('Set DSH_HARNESS_ROOT to a matching DeepSeek Harness checkout before building the Client bundle.')
-const { clientBundle } = await import(pathToFileURL(join(harnessRoot, 'packages/client/tsdown.client.ts')).href)
-
-export default clientBundle(import.meta.dirname, ['lib/types/index.js'])
+export default defineConfig({
+  entry: ['lib/types/index.js'],
+  outDir: 'lib',
+  format: ['esm'],
+  fixedExtension: false,
+  platform: 'node',
+  target: 'es2024',
+  dts: false,
+  clean: false,
+})

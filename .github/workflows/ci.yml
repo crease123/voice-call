@@ -1,14 +1,11 @@
 # CI for the voice-call plugin.
 #
-# What runs: install -> typecheck -> unit tests.
+# What runs: install -> build -> unit tests.
 #
-# Why a full `pnpm run build` is not here yet: scripts/build.mjs calls
-# scripts/generate-remote.mjs, which requires DSH_HARNESS_ROOT pointing at a
-# matching DeepSeek Harness checkout with built Typert artifacts. A hosted
-# runner cannot reproduce that yet. Making the build self-contained (for
-# example by committing the generated metadata, the way dsh-journal-calendar
-# commits its generated artifacts) is a separate change; this workflow already
-# covers the parts that do not depend on it.
+# The build is self-contained: the Typert artifacts are generated in a Harness
+# checkout once and committed under generated/, then staged into each package's
+# lib/ by scripts/stage-typert.mjs. Refresh them with `pnpm run regen:typert`
+# when `@Remote` methods or the protocol line change.
 name: CI
 
 on:
@@ -44,12 +41,8 @@ jobs:
       - name: Install
         run: pnpm install --frozen-lockfile
 
-      # The client packages import generated declarations from lib/, so only
-      # the two host packages can be typechecked without a full build.
-      - name: Typecheck
-        run: |
-          pnpm exec tsc -p packages/experimental/voice-speech-doubao/tsconfig.json
-          pnpm exec tsc -p packages/experimental/personal-agent/tsconfig.json
+      - name: Build
+        run: pnpm run build
 
       - name: Test
         run: pnpm run test:voice-output
