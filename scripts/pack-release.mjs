@@ -66,18 +66,22 @@ for (const name of names) {
 }
 const bundle = join(root, 'packages/experimental/voice-conversation-bundle')
 const data = { ...manifest, main: 'lib/index.js', types: 'lib/types/index.d.ts', exports: { '.': { types: './lib/types/index.d.ts', default: './lib/index.js' }, './package.json': './package.json', './cordis.patch.yml': './cordis.patch.yml', './locale/*.json': './locale/*.json' }, dsh: { bundle: { patch: './cordis.patch.yml' } } }
-// Embed our own prebuilt components. URL subdependencies are rejected by the
-// default pnpm policy used by DSH. Hoist their registry requirements so npm and
-// pnpm both install everything needed by the embedded components.
+// Embed our own prebuilt components. Promote their external requirements to
+// the release manifest without installing a second copy of the host peers.
 data.bundledDependencies = internalNames
 data.dependencies = { ...manifest.dependencies }
+data.peerDependencies = { ...manifest.peerDependencies }
 for (const name of names) {
   const child = JSON.parse(await readFile(join(root, 'packages/experimental', name, 'package.json'), 'utf8'))
   for (const group of ['dependencies', 'peerDependencies']) {
     for (const [key, value] of Object.entries(child[group] ?? {})) {
       if (internalNames.includes(key)) continue
-      if (data.dependencies[key] && data.dependencies[key] !== value) throw new Error(`Conflicting runtime requirement: ${key}`)
-      data.dependencies[key] = value
+      const otherGroup = group === 'dependencies' ? 'peerDependencies' : 'dependencies'
+      const declared = data[group][key]
+      if (Object.hasOwn(data[otherGroup], key) || (declared !== undefined && declared !== value)) {
+        throw new Error(`Conflicting runtime requirement: ${key}`)
+      }
+      data[group][key] = value
     }
   }
 }

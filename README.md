@@ -122,7 +122,7 @@ Recognition and synthesis depend on network and provider latency. DeepSeek recog
 
 ## Development and architecture
 
-Users only need to install `voice-call`. The main release embeds its three runtime components.
+Users only need to install `voice-call`. The main release embeds its three runtime components. It declares shared Harness packages as peer dependencies so the Desktop plugin installer can use the host’s copies.
 
 | Internal component | Responsibility |
 | --- | --- |

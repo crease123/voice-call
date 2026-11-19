@@ -122,7 +122,7 @@ dsh plugin --profile <你的-profile> add voice-call
 
 ## 开发与实现
 
-普通用户安装 `voice-call` 即可，主发行包包含所需的三个自有运行组件。
+普通用户安装 `voice-call` 即可，主发行包包含所需的三个自有运行组件。与宿主共享的 Harness 包声明为对等依赖，由桌面端提供。
 
 | 内部组件 | 职责 |
 | --- | --- |
